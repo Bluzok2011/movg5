@@ -1,5 +1,6 @@
 const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d'); 
+const ctx = canvas.getContext('2d');
+const starterButton = document.querySelector("#start")
 const CANVAS_WIDTH = canvas.width = window.innerWidth;
 const CANVAS_HEIGHT = canvas.height = window.innerHeight;
 
@@ -9,13 +10,28 @@ collisionCanvas.width = window.innerWidth;
 collisionCanvas.height = window.innerHeight;
 
 
-let score = 50;
+let score = 500;
 let gameOver = false;
 ctx.font = '50px Impact';
 
 let timeToNextRaven = 0;
 let ravenInterval = 500;
 let lastTime = 0;
+
+function getRavenScore(a) {
+    const b = a * 100;
+    const c = Math.floor(b);
+    const e = 100 - c;
+    const f = e * 2;
+    return(f)
+}
+function getRavenDamage(a) {
+    const b = a * 100;
+    const c = Math.floor(b);
+    const e = 100 - c;
+    const f = e * 1.5;
+    return(f)
+}
 
 let raven = [];
 class Raven {
@@ -39,6 +55,8 @@ class Raven {
         this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
         this.color = 'rgb(' + this.randomColors[0] + ',' + this.randomColors[1] + ',' + this.randomColors[2] + ')';
         this.hasTrail = Math.random() > 0.5;
+        this.score = getRavenScore(this.sizeModifier);
+        this.damage = getRavenDamage(this.sizeModifier);
     }
     update(deltaTime) {
         this.x -= this.directionX;
@@ -67,7 +85,7 @@ class Raven {
         }
         if (this.x < 0 - this.width) {
             this.markedForDeletion = true;
-            score--;
+            score -= this.damage;
         }
     }
     draw() {
@@ -81,6 +99,7 @@ function drawScore() {
     ctx.fillText('Score: ' + score, 50, 75);
         ctx.fillStyle = 'white';
     ctx.fillText('Score: ' + score, 55, 80);
+    console.log(score);
 }
 
 let explosions = [];
@@ -122,7 +141,7 @@ window.addEventListener('click', function(e) {
         if (object.randomColors[0] === pc[0] && object.randomColors[1] === pc[1] && object.randomColors[2] === pc[2]) {
             // collision detected
             object.markedForDeletion = true;
-            score += 2;
+            score += object.score;
             explosions.push(new Explosion(object.x, object.y, object.width))
         }
     });
@@ -161,7 +180,6 @@ class Particle {
             ${this.color[0]}
             ${this.color[1]}
             ${this.color[2]}`;
-        console.log(ctx.fillStyle);
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); 
         ctx.fill();
         ctx.restore();
@@ -196,4 +214,7 @@ function animate(timestamp) {
         drawGameOver();
     }
 };
-animate(0);
+starterButton.addEventListener("click", function() {
+    animate(0);
+    starterButton.style.visibility = "hidden";
+})
