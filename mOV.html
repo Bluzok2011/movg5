@@ -9,6 +9,16 @@
     <script src="mOV.js" defer></script>
 </head>
 <body>
+    <div id="a">
+        <label for="difficulty">Choose Difficulty:</label>
+        <select id="difficulty" name="difficulties">
+            <option value="0.7">Super Easy</option>
+            <option value="0.8">Easy</option>
+            <option value="1" selected>Normal</option>
+            <option value="1.2">Hard</option>
+            <option value="1.5">Super Hard</option>
+        </select>
+    </div>
     <button id="start"><strong>Press to start the Game</strong></button>
     <canvas id="collision"></canvas>
     <canvas id="canvas"></canvas>

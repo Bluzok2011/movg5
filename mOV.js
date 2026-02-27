@@ -1,6 +1,13 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const starterButton = document.querySelector("#start")
+let localDifficulty = 1;
+const starterButton = document.querySelector("#start");
+const div = document.getElementById('a');
+const dropdown = document.getElementById('difficulty');
+dropdown.addEventListener('change', function(e) {
+    localDifficulty = Number(e.target.value);
+    console.log(localDifficulty);
+});
 const CANVAS_WIDTH = canvas.width = window.innerWidth;
 const CANVAS_HEIGHT = canvas.height = window.innerHeight;
 
@@ -12,6 +19,7 @@ collisionCanvas.height = window.innerHeight;
 
 let score = 500;
 let gameOver = false;
+let wonGame = false;
 ctx.font = '50px Impact';
 
 let timeToNextRaven = 0;
@@ -21,16 +29,47 @@ let lastTime = 0;
 function getRavenScore(a) {
     const b = a * 100;
     const c = Math.floor(b);
-    const e = 100 - c;
-    const f = e * 2;
+    const e = 101 - c;
+    const f = e * (2 / localDifficulty);
     return(f)
 }
 function getRavenDamage(a) {
     const b = a * 100;
     const c = Math.floor(b);
-    const e = 100 - c;
-    const f = e * 1.5;
+    const e = 101 - c;
+    const f = e * (1.5 * localDifficulty);
     return(f)
+}
+function getRavenInterval() {
+    const a = 1000 - score;
+    if (a > 50){
+        return(a);
+    } else {
+        return (50);
+    };
+};
+function getSizeModifier() {
+    if (score < 225) {
+        let a = 0.2;
+        let b = 0.8;
+        let c = Math.random() * a + b;
+        return(c);
+    } else if (score < 450) {
+        let a = 0.4;
+        let b = 0.6;
+        let c = Math.random() * a + b;
+        return(c); 
+    } else if (score < 700) {
+        let a = 0.7;
+        let b = 0.3;
+        let c = Math.random() * a + b;
+        return(c); 
+    } else {
+        let a = 0.2;
+        let b = 0.2
+        let c = Math.random() * a + b;
+        return(c); 
+    }
 }
 
 let raven = [];
@@ -38,7 +77,7 @@ class Raven {
     constructor() {
         this.directionX = Math.random() * 5 + 3;
         this.directionY = Math.random() * 5 - 2.5;
-        this.sizeModifier = Math.random() * 0.6 + 0.4;
+        this.sizeModifier = getSizeModifier();
         this.width = 271 * this.sizeModifier;
         this.height = 194 * this.sizeModifier;
         this.x = canvas.width;
@@ -154,6 +193,14 @@ function drawGameOver(){
     ctx.fillStyle = "white"
     ctx.fillText("GAME OVER", CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
 }
+function drawGameWon(){
+    ctx.textAlign = "center"
+    ctx.fillStyle = "black"
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.fillStyle = "white"
+    ctx.fillText("You won the game!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+}
+
 
 let particles = [];
 class Particle {
@@ -189,6 +236,7 @@ class Particle {
 function animate(timestamp) {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     collisionCtx.clearRect(0,0,collisionCanvas.width, collisionCanvas.height);
+    ravenInterval = getRavenInterval();
     let deltaTime = timestamp - lastTime;
     lastTime = timestamp;
     timeToNextRaven += deltaTime;
@@ -208,13 +256,20 @@ function animate(timestamp) {
     explosions = explosions.filter(object => !object.markedForDeletion);
     particles = particles.filter(object => !object.markedForDeletion);
     if (score < 1) gameOver = true;
-    if (!gameOver) {
-        requestAnimationFrame(animate);
-    } else { 
-        drawGameOver();
+    if (score > 1001) wonGame = true;    
+    if (!wonGame) {
+        if (!gameOver) {
+            requestAnimationFrame(animate);
+        } else { 
+            drawGameOver();
+        }
+    } else {
+        drawGameWon();
     }
 };
 starterButton.addEventListener("click", function() {
     animate(0);
     starterButton.style.visibility = "hidden";
+    div.style.visibility = "hidden";
+    console.log(localDifficulty);
 })
