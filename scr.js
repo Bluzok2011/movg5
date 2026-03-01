@@ -5,6 +5,21 @@ const CANVAS_HEIGHT = canvas.height = window.innerHeight;
 let timeToNextRaven = 0;
 let ravenInterval = 500;
 let lastTime = 0;
+let score = 500
+
+function getRavenInterval() {
+    const a = 1000 - score;
+    if (a > 50){
+        return(a);
+    } else {
+        return (50);
+    };
+};
+function getSizeModifier() {
+        let c = Math.random() * 0.6 + 0.4;
+        return(c); 
+}
+
 
 let raven = [];
 class Raven {
@@ -104,7 +119,7 @@ function animate(timestamp) {
             return a.width - b.width;
         });
     }
-    [...particles, ...raven, ...explosions].forEach(object => {
+    [...particles, ...raven].forEach(object => {
         object.update(deltaTime);
         object.draw();
     });
