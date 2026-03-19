@@ -8,6 +8,7 @@ let enemyTimer = 0;
 let enemyInterval = Math.random() * 1000 + 750;
 let lastTime = 0;
 let score = 0;
+let gameOver = false;
 
 class InputHandler {
     constructor(){
@@ -55,7 +56,7 @@ class Player {
         this.interval = 1000/this.fps;
 
     }
-    update(input, deltaTime){
+    update(input, deltaTime, enemies){
         if (this.timer > this.interval){
             if (this.frameX >= this.maxFrameX) this.frameX = 0;
             else this.frameX++;
@@ -84,6 +85,15 @@ class Player {
         }
         if (this.y < 0) this.y = 0;
         else if (this.y > this.gameheight - this.height) this.y = this.gameheight - this.height
+        enemies.forEach(enem => {
+            const dx = (enem.x + enem.width/2) - (this.x + this.width/2);
+            const dy = (enem.y + enem.height/2) - (this.y + this.height/2);
+            const pythagoras = Math.sqrt(dx * dx + dy * dy);
+            const sumOfRadii = enem.width/2 + this.width/2
+            if (pythagoras < sumOfRadii){
+                gameOver = true;
+            }         
+        })
         
     }
     draw(){
@@ -175,12 +185,21 @@ function handleEnemies(deltaTime){
 }
 
 function displayStatus(){
-    ctx.font = '50px Impact';
-    ctx.fillStyle = 'black';
-    ctx.fillText('Score: ' + score, 20, 50);
-    ctx.fillStyle = 'white';
-    ctx.fillText('Score: ' + score, 25, 55);
-    console.log(score);
+    if (!gameOver){
+        ctx.font = '50px Impact';
+        ctx.fillStyle = 'black';
+        ctx.fillText('Score: ' + score, 20, 50);
+        ctx.fillStyle = 'white';
+        ctx.fillText('Score: ' + score, 22.5, 52.5);
+    } else {
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+        ctx.fillStyle = "#A9A9"
+        ctx.fillText('Game Over: ' + score, CANVAS_WIDTH/2 - 2.5, CANVAS_HEIGHT/2 - 2.5);
+        ctx.fillStyle = 'white';
+        ctx.fillText('Game Over: ' + score, CANVAS_WIDTH/2 , CANVAS_HEIGHT/2);
+    }
 
 }
 
@@ -195,11 +214,13 @@ function animate(timeStamp){
     ctx.clearRect(0, 0,CANVAS_WIDTH, CANVAS_HEIGHT);
     background.update();
     background.draw();
-    players.update(input, deltaTime);
+    players.update(input, deltaTime, enemies);
     players.draw();
     handleEnemies(deltaTime);
     displayStatus();
-    requestAnimationFrame(animate);
+    if (!gameOver){
+        requestAnimationFrame(animate);
+    }
 }
 animate(0);
 });
