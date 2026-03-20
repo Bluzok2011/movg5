@@ -1,8 +1,8 @@
 window.addEventListener ("load", function(){
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const CANVAS_WIDTH = canvas.width = 1200;
-const CANVAS_HEIGHT = canvas.height = 720;
+const CANVAS_WIDTH = canvas.width = window.innerWidth;
+const CANVAS_HEIGHT = canvas.height = this.window.innerHeight;
 let enemies = [];
 let enemyTimer = 0;
 let enemyInterval = Math.random() * 1000 + 750;
@@ -33,7 +33,17 @@ class InputHandler {
                 this.keys.splice(this.keys.indexOf(e.key), 1);
                 //this.keys.splice(0, this.keys.length)
             }
-        })
+        });
+        window.addEventListener('touchstart', e => {
+            e.changedTouches[0].pageX
+        });
+        window.addEventListener('touchmove', e => {
+
+        });
+        window.addEventListener('touchend', e => {
+            console.log(e);
+        });
+
     }
 }
 
@@ -143,8 +153,8 @@ class Backround {
         }
     }
     draw(){
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
-        ctx.drawImage(this.image, this.x + this.width -1, this.y, this.width, this.height)
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.screenHeigth)
+        ctx.drawImage(this.image, this.x + this.width -1, this.y, this.width, this.screenHeigth)
     }
     restart() {
         this.x = 0;
@@ -244,7 +254,6 @@ const players = new Player(CANVAS_HEIGHT, CANVAS_WIDTH);
 function animate(timeStamp){
     const deltaTime = timeStamp - lastTime;
     lastTime = timeStamp;
-    console.log(enemies);
     ctx.clearRect(0, 0,CANVAS_WIDTH, CANVAS_HEIGHT);
     background.update();
     background.draw();
