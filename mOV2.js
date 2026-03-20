@@ -1,7 +1,7 @@
 window.addEventListener ("load", function(){
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const CANVAS_WIDTH = canvas.width = 800;
+const CANVAS_WIDTH = canvas.width = 1200;
 const CANVAS_HEIGHT = canvas.height = 720;
 let enemies = [];
 let enemyTimer = 0;
@@ -20,6 +20,8 @@ class InputHandler {
                 e.key === "d") &&
                 this.keys.indexOf(e.key) === -1) {
                 this.keys.push(e.key);
+            } else if (e.key === 'Enter' && gameOver) {
+                restartWindow();
             }
             
         })
@@ -106,6 +108,21 @@ class Player {
     isGrounded(){
         return this.y >= this.gameheight - this.height - 20;
     }
+    restart(){
+        this.x = 0;
+        this.y = this.gameheight - this.height -20;
+        this.vy = 0
+        this.image = doggo;
+        this.frameX = 0;
+        this.maxFrameX = 8
+        this.frameY = 0;
+        this.speed = 0;
+        this.vy = 0;
+        this.gravity = 1;
+        this.fps = 30;
+        this.timer = 0;
+        this.interval = 1000/this.fps; 
+    }
 }
 
 class Backround {
@@ -128,6 +145,13 @@ class Backround {
     draw(){
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
         ctx.drawImage(this.image, this.x + this.width -1, this.y, this.width, this.height)
+    }
+    restart() {
+        this.x = 0;
+        this.y = 0;
+        this.width = 2400;
+        this.height = 720;
+        this.speed = 7;
     }
 }
 
@@ -184,8 +208,18 @@ function handleEnemies(deltaTime){
     enemies = enemies.filter(object => !object.marked4Deletion)
 }
 
+function restartWindow(){
+    players.restart();
+    background.restart();
+    score = 0;
+    gameOver = false;
+    enemies = [];
+    animate(0);
+}
+
 function displayStatus(){
     if (!gameOver){
+        ctx.textAlign = 'left';
         ctx.font = '50px Impact';
         ctx.fillStyle = 'black';
         ctx.fillText('Score: ' + score, 20, 50);
@@ -196,9 +230,9 @@ function displayStatus(){
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
         ctx.fillStyle = "#A9A9"
-        ctx.fillText('Game Over: ' + score, CANVAS_WIDTH/2 - 2.5, CANVAS_HEIGHT/2 - 2.5);
+        ctx.fillText('Game Over; score: ' + score + '; press Enter to restart', CANVAS_WIDTH/2 - 2.5, CANVAS_HEIGHT/2 - 2.5);
         ctx.fillStyle = 'white';
-        ctx.fillText('Game Over: ' + score, CANVAS_WIDTH/2 , CANVAS_HEIGHT/2);
+        ctx.fillText('Game Over; score: ' + score + '; press Enter to restart', CANVAS_WIDTH/2 , CANVAS_HEIGHT/2);
     }
 
 }
