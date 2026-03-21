@@ -13,6 +13,8 @@ let gameOver = false;
 class InputHandler {
     constructor(){
         this.keys = [];
+        this.touchY = "";
+        this.touchTreshold = 30;
         window.addEventListener("keydown", e => {
             if ((e.key === "a" ||
                 e.key === "w" ||
@@ -31,17 +33,22 @@ class InputHandler {
                 e.key === "s" ||
                 e.key === "d"){
                 this.keys.splice(this.keys.indexOf(e.key), 1);
-                //this.keys.splice(0, this.keys.length)
             }
         });
         window.addEventListener('touchstart', e => {
-            e.changedTouches[0].pageX
+            this.touchY = e.changedTouches[0].pageY;
         });
         window.addEventListener('touchmove', e => {
-
+            const swipeDistance = e.changedTouches[0].pageY - this.touchY;
+            if (swipeDistance < -this.touchTreshold && this.keys.indexOf("swipe up") === -1) this.keys.push("swipe up");
+            else if (swipeDistance > this.touchTreshold && this.keys.indexOf("swipe down") === -1) {
+                this.keys.push("swipe down");
+                if (gameOver)restartWindow();
+            }
         });
         window.addEventListener('touchend', e => {
-            console.log(e);
+            this.keys.splice(this.keys.indexOf("swipe up"), 1);
+            this.keys.splice(this.keys.indexOf("swipe down"), 1);
         });
 
     }
@@ -79,7 +86,7 @@ class Player {
         } else if (input.keys.indexOf("a") > -1){
             this.speed = -5;
         }  else this.speed = 0;
-        if (input.keys.indexOf("w" ) > -1 && this.isGrounded()){
+        if ((input.keys.indexOf("w" ) > -1 || input.keys.indexOf("swipe up") > -1 ) && this.isGrounded()){
             this.vy -= 32;
         }
         if (this.x < 0) this.x = 0;
