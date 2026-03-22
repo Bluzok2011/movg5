@@ -1,7 +1,7 @@
 window.addEventListener ("load", function(){
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const CANVAS_WIDTH = canvas.width = window.innerWidth;
+const CANVAS_WIDTH = canvas.width = this.window.innerWidth;
 const CANVAS_HEIGHT = canvas.height = this.window.innerHeight;
 let enemies = [];
 let enemyTimer = 0;
@@ -56,11 +56,15 @@ class InputHandler {
 
 class Player {
     constructor(CANVAS_HEIGHT, CANVAS_WIDTH){
+        console.log(CANVAS_HEIGHT)
         this.gamewidth = CANVAS_WIDTH;
         this.gameheight = CANVAS_HEIGHT;
-        this.width = 200;
-        this.height = 200;
+        this.height = Math.floor(this.gameheight/3.6);
+        console.log(this.height)
+        this.width = this.height;
         this.x = 0;
+        this.spriteheight = 200;
+        this.spritewidth = 200;
         this.y = this.gameheight - this.height -20;
         this.vy = 0
         this.image = doggo;
@@ -69,7 +73,7 @@ class Player {
         this.frameY = 0;
         this.speed = 0;
         this.vy = 0;
-        this.gravity = 1;
+        this.gravity = this.gameheight/600;
         this.fps = 30;
         this.timer = 0;
         this.interval = 1000/this.fps;
@@ -87,7 +91,7 @@ class Player {
             this.speed = -5;
         }  else this.speed = 0;
         if ((input.keys.indexOf("w" ) > -1 || input.keys.indexOf("swipe up") > -1 ) && this.isGrounded()){
-            this.vy -= 32;
+            this.vy -= Math.floor(this.gameheight/22.5);
         }
         if (this.x < 0) this.x = 0;
         else if (this.x > this.gamewidth - this.width) this.x = this.gamewidth - this.width
@@ -120,13 +124,18 @@ class Player {
         ctx.beginPath();
         ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI*2);
         ctx.stroke();
-        ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height)
+        ctx.drawImage(this.image, this.frameX * this.spritewidth, this.frameY * this.spriteheight, this.spritewidth, this.spriteheight, this.x, this.y, this.width, this.height)
     }
     isGrounded(){
         return this.y >= this.gameheight - this.height - 20;
     }
-    restart(){
+    restart(){        
+        this.height = Math.floor(this.gameheight/3.6);
+        console.log(this.height)
+        this.width = this.height;
         this.x = 0;
+        this.spriteheight = 200;
+        this.spritewidth = 200;
         this.y = this.gameheight - this.height -20;
         this.vy = 0
         this.image = doggo;
@@ -135,10 +144,10 @@ class Player {
         this.frameY = 0;
         this.speed = 0;
         this.vy = 0;
-        this.gravity = 1;
+        this.gravity = this.gameheight/600;
         this.fps = 30;
         this.timer = 0;
-        this.interval = 1000/this.fps; 
+        this.interval = 1000/this.fps;
     }
 }
 
