@@ -9,6 +9,9 @@ let enemyInterval = Math.random() * 1000 + 750;
 let lastTime = 0;
 let score = 0;
 let gameOver = false;
+let pixels = CANVAS_HEIGHT/18;
+let text = pixels + "px Impact"
+let textModifier = CANVAS_HEIGHT/300
 
 class InputHandler {
     constructor(){
@@ -40,7 +43,10 @@ class InputHandler {
         });
         window.addEventListener('touchmove', e => {
             const swipeDistance = e.changedTouches[0].pageY - this.touchY;
-            if (swipeDistance < -this.touchTreshold && this.keys.indexOf("swipe up") === -1) this.keys.push("swipe up");
+            if (swipeDistance < -this.touchTreshold && this.keys.indexOf("swipe up") === -1) {
+                this.keys.push("swipe up");
+                if (gameOver)restartWindow();
+            }
             else if (swipeDistance > this.touchTreshold && this.keys.indexOf("swipe down") === -1) {
                 this.keys.push("swipe down");
                 if (gameOver)restartWindow();
@@ -187,8 +193,8 @@ class Enemy {
         this.screenWidth = gamewidth;
         this.spritewidth = 1374 / 6;
         this.spriteheight = 171;
-        this.width = 215
-        this.height = 150;
+        this.width = this.screenHeigth/3.34; 
+        this.height = this.width/1.4;
         this.image = worm;
         this.frameX = 0;
         this.maxFrame = 5;
@@ -246,19 +252,19 @@ function restartWindow(){
 function displayStatus(){
     if (!gameOver){
         ctx.textAlign = 'left';
-        ctx.font = '50px Impact';
+        ctx.font = text;
         ctx.fillStyle = 'black';
         ctx.fillText('Score: ' + score, 20, 50);
         ctx.fillStyle = 'white';
-        ctx.fillText('Score: ' + score, 22.5, 52.5);
+        ctx.fillText('Score: ' + score, 20 + textModifier, 50 + textModifier);
     } else {
         ctx.textAlign = 'center';
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
         ctx.fillStyle = "#A9A9"
-        ctx.fillText('Game Over; score: ' + score + '; press Enter to restart', CANVAS_WIDTH/2 - 2.5, CANVAS_HEIGHT/2 - 2.5);
+        ctx.fillText('Game Over; score: ' + score + '; press Enter or swipe to restart', CANVAS_WIDTH/2 - textModifier, CANVAS_HEIGHT/2 -textModifier);
         ctx.fillStyle = 'white';
-        ctx.fillText('Game Over; score: ' + score + '; press Enter to restart', CANVAS_WIDTH/2 , CANVAS_HEIGHT/2);
+        ctx.fillText('Game Over; score: ' + score + '; press Enter or swipe to restart', CANVAS_WIDTH/2 , CANVAS_HEIGHT/2);
     }
 
 }
