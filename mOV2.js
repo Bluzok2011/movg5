@@ -115,10 +115,10 @@ class Player {
         if (this.y < 0) this.y = 0;
         else if (this.y > this.gameheight - this.height) this.y = this.gameheight - this.height
         enemies.forEach(enem => {
-            const dx = (enem.x + enem.width/2) - (this.x + this.width/2);
-            const dy = (enem.y + enem.height/2) - (this.y + this.height/2);
+            const dx = ((enem.x + enem.width/2) - 15) - (this.x + this.width/2);
+            const dy = (enem.y + enem.height/1.5) - (this.y + this.height/2);
             const pythagoras = Math.sqrt(dx * dx + dy * dy);
-            const sumOfRadii = enem.width/2 + this.width/2
+            const sumOfRadii = enem.width/2.25 + this.width/2.25;
             if (pythagoras < sumOfRadii){
                 gameOver = true;
             }         
@@ -128,7 +128,7 @@ class Player {
     draw(){
         //ctx.strokeRect(this.x, this.y, this.width, this.height + 1);
         ctx.beginPath();
-        ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI*2);
+        ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width/2.25, 0, Math.PI*2);
         ctx.stroke();
         ctx.drawImage(this.image, this.frameX * this.spritewidth, this.frameY * this.spriteheight, this.spritewidth, this.spriteheight, this.x, this.y, this.width, this.height)
     }
@@ -221,7 +221,7 @@ class Enemy {
     draw(){
         //ctx.strokeRect(this.x, this.y, this.width, this.height + 1)
         ctx.beginPath();
-        ctx.arc(this.x + this.width/2, this.y + this.height/1.5, this.width/2, 0, Math.PI*2);
+        ctx.arc((this.x + this.width/2) - 15 , this.y + this.height/1.5, this.width/2.25, 0, Math.PI*2);
         ctx.stroke();
         ctx.drawImage(this.image, this.frameX * this.spritewidth, 0, this.spritewidth, this.spriteheight, this.x, this.y, this.width, this.height)        
     }
@@ -279,9 +279,9 @@ function animate(timeStamp){
     ctx.clearRect(0, 0,CANVAS_WIDTH, CANVAS_HEIGHT);
     background.update();
     background.draw();
+    handleEnemies(deltaTime);
     players.update(input, deltaTime, enemies);
     players.draw();
-    handleEnemies(deltaTime);
     displayStatus();
     if (!gameOver){
         requestAnimationFrame(animate);
