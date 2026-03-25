@@ -4,8 +4,8 @@ const ctx = canvas.getContext('2d');
 const CANVAS_WIDTH = canvas.width = this.window.innerWidth;
 const CANVAS_HEIGHT = canvas.height = this.window.innerHeight;
 let enemies = [];
-let enemyTimer = 0;
-let enemyInterval = Math.random() * 1000 + 750;
+let enemyTimer = 700;
+let enemyInterval = Math.random() * 800 + 1500;
 let lastTime = 0;
 let score = 0;
 let gameOver = false;
@@ -79,7 +79,7 @@ class Player {
         this.frameY = 0;
         this.speed = 0;
         this.vy = 0;
-        this.gravity = this.gameheight/600;
+        this.gravity = this.gameheight/700;
         this.fps = 30;
         this.timer = 0;
         this.interval = 1000/this.fps;
@@ -126,10 +126,6 @@ class Player {
         
     }
     draw(){
-        //ctx.strokeRect(this.x, this.y, this.width, this.height + 1);
-        ctx.beginPath();
-        ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width/2.25, 0, Math.PI*2);
-        ctx.stroke();
         ctx.drawImage(this.image, this.frameX * this.spritewidth, this.frameY * this.spriteheight, this.spritewidth, this.spriteheight, this.x, this.y, this.width, this.height)
     }
     isGrounded(){
@@ -150,7 +146,7 @@ class Player {
         this.frameY = 0;
         this.speed = 0;
         this.vy = 0;
-        this.gravity = this.gameheight/600;
+        this.gravity = this.gameheight/670;
         this.fps = 30;
         this.timer = 0;
         this.interval = 1000/this.fps;
@@ -166,7 +162,7 @@ class Backround {
         this.y = 0;
         this.width = 2400;
         this.height = 720;
-        this.speed = 7;
+        this.speed = 5;
     }
     update(){
         this.x -= this.speed;
@@ -183,7 +179,7 @@ class Backround {
         this.y = 0;
         this.width = 2400;
         this.height = 720;
-        this.speed = 7;
+        this.speed = 5;
     }
 }
 
@@ -203,7 +199,7 @@ class Enemy {
         this.interval = 1000/this.fps;
         this.x = this.screenWidth;
         this.y = this.screenHeigth-this.height-20;
-        this.speed = Math.random() * 2 + 7;
+        this.speed = Math.random() * 2 + 5;
         this.marked4Deletion = false;
     }
     update(deltaTime){
@@ -219,10 +215,6 @@ class Enemy {
         }
     }
     draw(){
-        //ctx.strokeRect(this.x, this.y, this.width, this.height + 1)
-        ctx.beginPath();
-        ctx.arc((this.x + this.width/2) - 15 , this.y + this.height/1.5, this.width/2.25, 0, Math.PI*2);
-        ctx.stroke();
         ctx.drawImage(this.image, this.frameX * this.spritewidth, 0, this.spritewidth, this.spriteheight, this.x, this.y, this.width, this.height)        
     }
 }
@@ -231,7 +223,7 @@ function handleEnemies(deltaTime){
     if (enemyTimer > enemyInterval){
         enemies.push(new Enemy (CANVAS_HEIGHT, CANVAS_WIDTH))
         enemyTimer = 0;
-        enemyInterval = Math.random() * 1000 + 750;
+        enemyInterval = Math.random() * 800 + 1500;
     } else enemyTimer += deltaTime;
     enemies.forEach (e => {
         e.update(deltaTime);
