@@ -185,6 +185,20 @@ window.addEventListener('click', function(e) {
         }
     });
 });
+window.addEventListener('touchstart', function(e) {
+    const x = e.changedTouches[0].pageX
+    const y = e.changedTouches[0].pageY
+    const detectPixelColor = collisionCtx.getImageData(x, y, 1, 1);
+    const pc = detectPixelColor.data;
+    raven.forEach(object => {
+        if (object.randomColors[0] === pc[0] && object.randomColors[1] === pc[1] && object.randomColors[2] === pc[2]) {
+            // collision detected
+            object.markedForDeletion = true;
+            score += object.score;
+            explosions.push(new Explosion(object.x, object.y, object.width))
+        }
+    });
+});
 
 function drawGameOver(){
     ctx.textAlign = "center"
