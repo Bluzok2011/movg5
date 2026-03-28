@@ -1,12 +1,16 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+let difficulty = 1;
 let localDifficulty = 1;
+let mobileDifficulty = 1.8;
+let maxScore = 1000
 const starterButton = document.querySelector("#start");
 const div = document.getElementById('a');
 const dropdown = document.getElementById('difficulty');
+const isMobileLike = window.matchMedia("(pointer: coarse)").matches;
 dropdown.addEventListener('change', function(e) {
-    localDifficulty = Number(e.target.value);
-    console.log(localDifficulty);
+    difficulty = Number(e.target.value);
+    console.log(difficulty);
 });
 const CANVAS_WIDTH = canvas.width = window.innerWidth;
 const CANVAS_HEIGHT = canvas.height = window.innerHeight;
@@ -41,14 +45,44 @@ function getRavenDamage(a) {
     return(f)
 }
 function getRavenInterval() {
-    const a = 1000 - score;
-    if (a > 50){
+    const a = maxScore - score;
+    if (a > 1050) {
+        return(1050)
+    } else if (a > 50){
         return(a);
     } else {
         return (50);
     };
 };
 function getSizeModifier() {
+if (isMobileLike) {
+    if (score < 450) {
+        let a = 0.2;
+        let b = 0.8;
+        let c = Math.random() * a + b;
+        return(c);
+    } else if (score < 900) {
+        let a = 0.4;
+        let b = 0.6;
+        let c = Math.random() * a + b;
+        return(c); 
+    } else if (score < 1400) {
+        let a = 0.7;
+        let b = 0.3;
+        let c = Math.random() * a + b;
+        return(c); 
+    } else if (score < 2000) {
+        let a = 0.6;
+        let b = 0.2;
+        let c = Math.random() * a + b;
+        return(c); 
+    } else {
+        let a = 0.6;
+        let b = 0.1;
+        let c = Math.random() * a + b;
+        return(c); 
+    }
+} else {
     if (score < 225) {
         let a = 0.2;
         let b = 0.8;
@@ -66,11 +100,11 @@ function getSizeModifier() {
         return(c); 
     } else {
         let a = 0.2;
-        let b = 0.2
+        let b = 0.2;
         let c = Math.random() * a + b;
         return(c); 
     }
-}
+}};
 
 let raven = [];
 class Raven {
@@ -261,6 +295,7 @@ function animate(timestamp) {
             return a.width - b.width;
         });
     }
+    score = Math.floor(score);
     drawScore();
     [...particles, ...raven, ...explosions].forEach(object => {
         object.update(deltaTime);
@@ -270,7 +305,7 @@ function animate(timestamp) {
     explosions = explosions.filter(object => !object.markedForDeletion);
     particles = particles.filter(object => !object.markedForDeletion);
     if (score < 1) gameOver = true;
-    if (score > 1001) wonGame = true;    
+    if (score > maxScore + 1) wonGame = true;    
     if (!wonGame) {
         if (!gameOver) {
             requestAnimationFrame(animate);
@@ -285,5 +320,10 @@ starterButton.addEventListener("click", function() {
     animate(0);
     starterButton.style.visibility = "hidden";
     div.style.visibility = "hidden";
-    console.log(localDifficulty);
+    if (isMobileLike) {
+        localDifficulty = mobileDifficulty;
+        maxScore += 1500
+        score = 1000
+    }
+    else localDifficulty = difficulty;
 })
