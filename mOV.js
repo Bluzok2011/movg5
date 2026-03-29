@@ -10,7 +10,6 @@ const dropdown = document.getElementById('difficulty');
 const isMobileLike = window.matchMedia("(pointer: coarse)").matches;
 dropdown.addEventListener('change', function(e) {
     difficulty = Number(e.target.value);
-    console.log(difficulty);
 });
 const CANVAS_WIDTH = canvas.width = window.innerWidth;
 const CANVAS_HEIGHT = canvas.height = window.innerHeight;
@@ -45,14 +44,21 @@ function getRavenDamage(a) {
     return(f)
 }
 function getRavenInterval() {
-    const a = maxScore - score;
-    if (a > 1050) {
-        return(1050)
-    } else if (a > 50){
-        return(a);
+    if (isMobileLike) {
+        const a = (maxScore - score)/2;       
+        if (a > 50){
+            return(a);
+        } else {
+            return (50);
+        };
     } else {
-        return (50);
-    };
+        const a = maxScore - score;
+        if (a > 50){
+            return(a);
+        } else {
+            return (50);
+        };
+    }
 };
 function getSizeModifier() {
 if (isMobileLike) {
@@ -67,17 +73,17 @@ if (isMobileLike) {
         let c = Math.random() * a + b;
         return(c); 
     } else if (score < 1400) {
-        let a = 0.7;
-        let b = 0.3;
+        let a = 0.6;
+        let b = 0.4;
         let c = Math.random() * a + b;
         return(c); 
     } else if (score < 2000) {
-        let a = 0.6;
+        let a = 0.5;
         let b = 0.2;
         let c = Math.random() * a + b;
         return(c); 
     } else {
-        let a = 0.6;
+        let a = 0.4;
         let b = 0.1;
         let c = Math.random() * a + b;
         return(c); 
@@ -172,7 +178,6 @@ function drawScore() {
     ctx.fillText('Score: ' + score, 50, 75);
         ctx.fillStyle = 'white';
     ctx.fillText('Score: ' + score, 55, 80);
-    console.log(score);
 }
 
 let explosions = [];
@@ -322,8 +327,8 @@ starterButton.addEventListener("click", function() {
     div.style.visibility = "hidden";
     if (isMobileLike) {
         localDifficulty = mobileDifficulty;
-        maxScore += 1500
-        score = 1000
+        maxScore += 1500;
+        score = 1000;
     }
     else localDifficulty = difficulty;
 })
