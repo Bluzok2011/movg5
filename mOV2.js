@@ -86,23 +86,6 @@ class Player {
 
     }
     update(input, deltaTime, enemies){
-        if (this.timer > this.interval){
-            if (this.frameX >= this.maxFrameX) this.frameX = 0;
-            else this.frameX++;
-            this.timer = 0;
-        } else this.timer += deltaTime;
-        if (input.keys.indexOf("d") > -1){
-            this.speed = 5;
-        } else if (input.keys.indexOf("a") > -1){
-            this.speed = -5;
-        }  else this.speed = 0;
-        if ((input.keys.indexOf("w" ) > -1 || input.keys.indexOf("swipe up") > -1 ) && this.isGrounded()){
-            this.vy -= Math.floor(this.gameheight/22.5);
-        }
-        if (this.x < 0) this.x = 0;
-        else if (this.x > this.gamewidth - this.width) this.x = this.gamewidth - this.width
-        this.x += this.speed;
-        this.y += this.vy;
         if (!this.isGrounded()) {
             this.vy += this.gravity;
             this.frameY = 1;
@@ -112,8 +95,27 @@ class Player {
             this.maxFrameX = 8
             this.frameY = 0;
         }
+
+        if (input.keys.indexOf("d") > -1){
+            this.speed = 0.3;
+        } else if (input.keys.indexOf("a") > -1){
+            this.speed = -0.3;
+        }  else this.speed = 0;
+        if ((input.keys.indexOf("w" ) > -1 || input.keys.indexOf("swipe up") > -1 ) && this.isGrounded()){
+            this.vy -= Math.floor(this.gameheight/22.5);
+        }
+
+        // Update position
+        this.x += this.speed * deltaTime;
+        this.y += this.vy * deltaTime /16;
+
+        if (this.x < 0) this.x = 0;
+        else if (this.x > this.gamewidth - this.width) this.x = this.gamewidth - this.width
+
         if (this.y < 0) this.y = 0;
-        else if (this.y > this.gameheight - this.height) this.y = this.gameheight - this.height
+        else if (this.y > this.gameheight - this.height - 20) this.y = this.gameheight - this.height - 20;
+
+        // Collision detection
         enemies.forEach(enem => {
             const dx = ((enem.x + enem.width/2) - 15) - (this.x + this.width/2);
             const dy = (enem.y + enem.height/1.5) - (this.y + this.height/2);
@@ -122,7 +124,13 @@ class Player {
             if (pythagoras < sumOfRadii){
                 gameOver = true;
             }         
-        })
+        });
+        if (this.timer > this.interval){
+            if (this.frameX >= this.maxFrameX) this.frameX = 0;
+            else this.frameX++;
+            this.timer = 0;
+        } else this.timer += deltaTime;
+
         
     }
     draw(){
@@ -199,7 +207,7 @@ class Enemy {
         this.interval = 1000/this.fps;
         this.x = this.screenWidth;
         this.y = this.screenHeigth-this.height-20;
-        this.speed = Math.random() * 2 + 5;
+        this.speed = (Math.random() * 2 + 5)/16;
         this.marked4Deletion = false;
     }
     update(deltaTime){
@@ -208,7 +216,7 @@ class Enemy {
             else this.frameX++;
             this.timer = 0;
         } else this.timer += deltaTime;
-        this.x -= this.speed;
+        this.x -= this.speed * deltaTime;
     if (this.x + this.width < 0) {
             this.marked4Deletion = true;
             score++;
