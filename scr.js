@@ -6,7 +6,7 @@ const CANVAS_HEIGHT = canvas.height = window.innerHeight;
 //Global Variables
 let timeToNextRaven = 0;
 let ravenInterval = 500;
-let timeToNextGame = 50000;
+let timeToNextGame = 0;
 let gameInterval = 30000;
 let lastTime = 0;
 let score = 500;
@@ -197,7 +197,6 @@ class Player {
         if (this.x < 0 || this.x > CANVAS_WIDTH) this.x = -this.width 
     }
 };
-backgroundAndPlayer.push(new Player)
 
 class InputHandler {
     constructor(){
@@ -288,7 +287,6 @@ function getSizeModifier() {
         let c = Math.random() * 0.6 + 0.4;
         return(c); 
 }
-
 //Animation Loops
 function animate(timestamp) {
     handled = false;
@@ -300,6 +298,7 @@ function animate(timestamp) {
     if (timeToNextGame < 1500) {
         updateEverything(deltaTime);
     } else if (timeToNextGame < gameInterval){
+        if (backgroundAndPlayer.length == 1) backgroundAndPlayer.push(new Player);
         backgroundAndPlayer[1].restart()
         animateRavenGame(deltaTime);
     } else if (timeToNextGame < gameInterval + 1500){
