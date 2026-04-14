@@ -27,7 +27,7 @@ class Raven {
         this.y = Math.random() * (canvas.height - this.height);
         this.markedForDeletion = false;
         this.image = new Image();
-        this.image.src = 'raven.png'; 
+        this.image.src = "/images/enemies/raven.png"; 
         this.spriteWidth = 271;
         this.spriteHeight = 194;
         this.frame = 0;
@@ -106,7 +106,7 @@ class Backround {
         this.screenWidth = CANVAS_WIDTH;
         this.screenHeigth = CANVAS_HEIGHT;
         this.image = new Image;
-        this.image.src = "background.png";
+        this.image.src = "/images/backgroundForest/background.png";
         this.x = 0;
         this.y = 0;
         this.width = 2400;
@@ -139,7 +139,7 @@ class Player {
         this.y = this.gameheight - this.height -20;
         this.vy = 0
         this.image = new Image;
-        this.image.src = "doggo.png"
+        this.image.src = "/images/doggo.png"
         this.frameX = 0;
         this.maxFrameX = 8;
         this.frameY = 0;
@@ -225,7 +225,7 @@ class Enemy {
         this.height = this.width/1.4;
         console.log(this.width, "x", this.height)
         this.image = new Image;
-        this.image.src = "enemy_worm.png"
+        this.image.src = "/images/enemies/worm.png"
         this.frameX = 0;
         this.maxFrame = 5;
         this.fps = 30;
