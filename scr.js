@@ -6,7 +6,7 @@ const CANVAS_HEIGHT = canvas.height = window.innerHeight;
 //Global Variables
 let timeToNextRaven = 0;
 let ravenInterval = 500;
-let timeToNextGame = 0;
+let timeToNextGame = 25000;
 let gameInterval = 30000;
 let lastTime = 0;
 let score = 500;
@@ -27,7 +27,7 @@ class Raven {
         this.y = Math.random() * (canvas.height - this.height);
         this.markedForDeletion = false;
         this.image = new Image();
-        this.image.src = "/images/enemies/raven.png"; 
+        this.image.src = "images/enemies/raven.png"; 
         this.spriteWidth = 271;
         this.spriteHeight = 194;
         this.frame = 0;
@@ -106,7 +106,7 @@ class Backround {
         this.screenWidth = CANVAS_WIDTH;
         this.screenHeigth = CANVAS_HEIGHT;
         this.image = new Image;
-        this.image.src = "/images/backgroundForest/background.png";
+        this.image.src = "images/backgroundForest/background.png";
         this.x = 0;
         this.y = 0;
         this.width = 2400;
@@ -139,7 +139,7 @@ class Player {
         this.y = this.gameheight - this.height -20;
         this.vy = 0
         this.image = new Image;
-        this.image.src = "/images/doggo.png"
+        this.image.src = "images/doggo.png"
         this.frameX = 0;
         this.maxFrameX = 8;
         this.frameY = 0;
@@ -205,8 +205,9 @@ class InputHandler {
     update(dog, worms){
         this.keys.splice(0, this.keys.length)
         this.keys.push("d")
+        this.dog = dog
         worms.forEach(worm =>{
-            if (worm.x - (dog.x + dog.width) <= dog.distance && worm.x - dog.x > 0) {
+            if (worm.x - (this.dog.x + this.dog.width) <= dog.distance && worm.x - dog.x > 0) {
                 this.keys.push("w")
             }
         })
@@ -225,7 +226,7 @@ class Enemy {
         this.height = this.width/1.4;
         console.log(this.width, "x", this.height)
         this.image = new Image;
-        this.image.src = "/images/enemies/worm.png"
+        this.image.src = "images/enemies/worm.png"
         this.frameX = 0;
         this.maxFrame = 5;
         this.fps = 30;
