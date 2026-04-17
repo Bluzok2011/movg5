@@ -124,7 +124,7 @@ class Raven {
         this.y = Math.random() * (canvas.height - this.height);
         this.markedForDeletion = false;
         this.image = new Image();
-        this.image.src = "/images/enemies/raven.png"; 
+        this.image.src = "../../images/enemies/raven.png"; 
         this.spriteWidth = 271;
         this.spriteHeight = 194;
         this.frame = 0;
@@ -184,7 +184,7 @@ let explosions = [];
 class Explosion {
     constructor (x, y, size){
         this.image = new Image();
-        this.image.src = "/images/utilities/boom.png";
+        this.image.src = "../../images/utilities/boom.png";
         this.spriteHeight = 179;
         this.spriteWidth = 200;
         this.size = size;
@@ -192,7 +192,7 @@ class Explosion {
         this.x = x;
         this.y = y;
         this.sound = new Audio();
-        this.sound.src = "/audio/rock_breaking.flac";
+        this.sound.src = "../../audio/rock_breaking.flac";
         this.timeSinceLastFrame = 0;
         this.frameInterval = 200;
         this.markedForDeletion = false;
