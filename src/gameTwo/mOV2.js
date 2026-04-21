@@ -66,7 +66,6 @@ class Player {
         this.gamewidth = CANVAS_WIDTH;
         this.gameheight = CANVAS_HEIGHT;
         this.height = Math.floor(this.gameheight/3.6);
-        console.log(this.height)
         this.width = this.height;
         this.x = 0;
         this.spriteheight = 200;
@@ -154,7 +153,7 @@ class Player {
         this.frameY = 0;
         this.speed = 0;
         this.vy = 0;
-        this.gravity = this.gameheight/670;
+        this.gravity = this.gameheight/700;
         this.fps = 30;
         this.timer = 0;
         this.interval = 1000/this.fps;
