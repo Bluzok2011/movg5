@@ -78,7 +78,7 @@ class Particle {
         this.radius = Math. random() * this.size /10;
         this.maxRadius = Math. random() * 20 + 35;
         this.markedForDeletion = false;
-        this.speedX = Math. random() * 1 + 0.5;
+        this.speedX = Math. random() + 0.5;
         this.color = color;
     }
     update(){
@@ -299,7 +299,7 @@ function animate(timestamp) {
     if (timeToNextGame < 1500) {
         updateEverything(deltaTime);
     } else if (timeToNextGame < gameInterval){
-        if (backgroundAndPlayer.length == 1) backgroundAndPlayer.push(new Player);
+        if (backgroundAndPlayer.length === 1) backgroundAndPlayer.push(new Player);
         backgroundAndPlayer[1].restart()
         animateRavenGame(deltaTime);
     } else if (timeToNextGame < gameInterval + 1500){

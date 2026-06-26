@@ -50,16 +50,16 @@ function getRavenInterval() {
             return(a);
         } else {
             return (50);
-        };
+        }
     } else {
         const a = maxScore - score;
         if (a > 50){
             return(a);
         } else {
             return (50);
-        };
+        }
     }
-};
+}
 function getSizeModifier() {
 if (isMobileLike) {
     if (score < 450) {
@@ -110,7 +110,7 @@ if (isMobileLike) {
         let c = Math.random() * a + b;
         return(c); 
     }
-}};
+}}
 
 let raven = [];
 class Raven {
@@ -207,7 +207,7 @@ class Explosion {
         }
     }
     draw(){
-        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y - (this.size * 0,25) , this.size, this.size);
+        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y - (this.size * 0.25) , this.size, this.size);
     }
 }
 
