@@ -7,7 +7,7 @@ import { UI } from "./ui.js";
 window.addEventListener("load", () => {
     const canvas = document.getElementById("canvas1");
     const ctx = canvas.getContext("2d");
-    const CANVAS_HEIGHT = canvas.height = 500; //window.innerHeight;
+    const CANVAS_HEIGHT = canvas.height = window.innerHeight;
     const mod = CANVAS_HEIGHT/500
     const CANVAS_WIDTH = canvas.width = window.innerWidth;
     let lastTime = 0;

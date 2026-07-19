@@ -29,8 +29,8 @@ export class Sitting extends State {
         this.player.frameX = 0;
         this.player.cooldown = 0;
         this.player.speed = 0;
-        this.player.vy = 15;
-        this.player.radius = 45;
+        this.player.vy = 15 * this.game.hMod;
+        this.player.radius = 45*this.player.game.hMod;
     }
     handleInput(input, d) {
         if (this.player.cooldown < 100) this.player.cooldown += d;
@@ -50,7 +50,7 @@ export class Running extends State {
         this.player.maxX = 8;
         this.player.frameX = 0;
         this.player.cooldown = 0;
-        this.player.radius = 45;
+        this.player.radius = 45*this.player.game.hMod;
     }
     handleInput(input, d) {
         this.game.particles.push(new Dust(this.game, this.player.x + this.player.width*0.6, this.player.y + this.player.height*0.9));
@@ -68,12 +68,12 @@ export class Jumping extends State {
     }
     enter() {
         if (this.player.onGround()) {
-            this.player.vy -= 20;
+            this.player.vy -= 19 * this.player.game.hMod;
         }
         this.player.frameY = 1;
         this.player.maxX = 6;
         this.player.frameX = 0;
-        this.player.radius = 45;
+        this.player.radius = 45*this.player.game.hMod;
     }
     handleInput(input, d) {
         if (this.player.cooldown < 200) this.player.cooldown += d;
@@ -94,7 +94,7 @@ export class Falling extends State {
         this.player.frameY = 2;
         this.player.maxX = 6;
         this.player.frameX = 0;
-        this.player.radius = 45;
+        this.player.radius = 45*this.player.game.hMod;
     }
     handleInput(input) {
         if (input.includes("s")) this.player.setState(states.DIVING, 0);
@@ -109,13 +109,13 @@ export class Rolling extends State {
         this.player.frameY = 6;
         this.player.maxX = 6;
         this.player.frameX = 0;
-        this.player.radius= 30;
+        this.player.radius= 30*this.player.game.hMod;
     }
     handleInput(input) {
         this.game.particles.push(new Fire(this.game, this.player.x + this.player.width, this.player.y + this.player.height));
         if (!input.includes("Enter") && this.player.onGround()) this.player.setState(states.RUNNING, 1);
         else if (!input.includes("Enter") && !this.player.onGround()) this.player.setState(states.FALLING, 1);
-        else if (input.includes("Enter") && input.includes("w") && this.player.onGround()) this.player.vy -= 20;
+        else if (input.includes("Enter") && input.includes("w") && this.player.onGround()) this.player.vy -= 20*this.player.game.hMod;
         else if (!this.player.onGround() && input.includes("s")) this.player.setState(states.DIVING, 0);
     }
 }
@@ -127,8 +127,8 @@ export class Diving extends State {
         this.player.frameY = 6;
         this.player.maxX = 6;
         this.player.frameX = 0;
-        this.player.vy = 15;
-        this.player.radius = 30;
+        this.player.vy = 15 *this.player.game.hMod;
+        this.player.radius = 30*this.player.game.hMod;
     }
     handleInput(input) {
         this.game.particles.push(new Fire(this.game, this.player.x + this.player.width, this.player.y + this.player.height));
@@ -156,7 +156,8 @@ export class Hit extends State {
         this.player.frameY = 4;
         this.player.maxX = 10;
         this.player.frameX = 0;
-        this.player.radius = 45;
+        this.player.vy = 15*this.player.game.hMod;
+        this.player.radius = 45*this.player.game.hMod;
     }
     handleInput(input) {
         if (this.player.onGround() && this.player.frameX >= this.player.maxX) {

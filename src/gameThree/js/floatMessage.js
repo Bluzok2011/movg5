@@ -1,11 +1,13 @@
 export class FloatingMessage {
-    constructor(value,x,y,targetX,targetY) {
+    constructor(value,x,y,targetX,targetY, game) {
         this.value = value;
+        this.game = game;
         this.x = x;
         this.y = y;
         this.targetX = targetX;
         this.targetY = targetY;
         this.timer = 0;
+        this.px = 20 * this.game.hMod;
         this.marked4Deletion = false;
     }
     update() {
@@ -17,7 +19,7 @@ export class FloatingMessage {
         }
     }
     draw(ctx){
-        ctx.font = "20px Creepster";
+        ctx.font = this.px+"px Creepster";
         ctx.fillStyle = "#fff";
         ctx.fillText(this.value, this.x+2, this.y+2);
         ctx.fillStyle = "#000000";

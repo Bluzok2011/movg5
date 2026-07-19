@@ -21,7 +21,7 @@ class Particle {
 export class Dust extends Particle {
     constructor(game, x, y) {
         super(game, x, y);
-        this.size = Math.random() * 10 +10;
+        this.size = (Math.random() * 10 +10)*this.game.hMod;
         this.speedX = Math.random();
         this.speedY = Math.random();
         this.color = "rgba(0, 0, 0, 0.3)";
@@ -29,7 +29,7 @@ export class Dust extends Particle {
         this.tranparency = Math.random() *0.33 + 0.44;
         if (!this.isDust) {
             this.image = document.getElementById("dust");
-            this.size = Math.random() * 30 +20;
+            this.size = (Math.random() * 30 +20)*this.game.hMod;
         }
     }
     draw(ctx) {
@@ -52,7 +52,7 @@ export class Splash extends Particle {
     constructor(game, x, y) {
         super(game, x, y);
         this.color = "rgba(0, 0, 0, 0.3)";
-        this.size = Math.random() * 100 +100;
+        this.size = (Math.random() * 100 +100)*this.game.hMod;
         this.speedX = Math.random() * 6 -4;
         this.speedY = Math.random() * 2+2;
         this.gravity = 0;
@@ -95,7 +95,7 @@ export class Fire extends Particle {
     constructor(game, x, y) {
         super(game, x, y);
         this.image = document.getElementById("fire");
-        this.size = Math.random() * 100 + 75;
+        this.size = (Math.random() * 100 + 55)*this.game.hMod;
         this.speedX = 1;
         this.speedY = 1;
         this.angle = 0;

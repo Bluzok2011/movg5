@@ -19,7 +19,7 @@ export class Player {
         this.speed = 0;
         this.splashs = 30;
         this.vy = 0;
-        this.maxSpeed = 10;
+        this.maxSpeed = 10*this.game.hMod;
         this.gravity = 0.575 * this.game.hMod;
         this.states = [
             new Sitting(this, this.game), //0
@@ -34,7 +34,7 @@ export class Player {
         this.interval = 1000  / 20;
         this.nextFrame = 0;
         this.cooldown = 0;
-        this.radius = 45;
+        this.radius = 45*this.game.hMod;
         this.centerY = null;
         this.centerX = null;
     }
@@ -74,7 +74,7 @@ export class Player {
 
         //movement
         if (!(this.curState === this.states[6])) {
-            this.x += this.speed;
+            this.x += this.speed*this.game.hMod;
         }
         this.y += this.vy;
         this.centerY = this.y - this.height/2;
@@ -119,12 +119,12 @@ export class Player {
                 this.game.particles.push(new Collision(this.game, enem.x+enem.width/2, enem.y+enem.height/2, enem.kind));
                 if (this.curState === this.states[5] || this.curState === this.states[4]) {
                     this.game.score += enem.score;
-                    this.game.float.push(new FloatingMessage("+"+enem.score, enem.x, enem.y, this.game.width, 20));
+                    this.game.float.push(new FloatingMessage("+"+enem.score, enem.x, enem.y, this.game.width, 20, this.game));
                 } else if (!(this.curState === this.states[6])){
                     this.setState(6, 0);
                     this.game.lifetime--;
                     this.game.score -= enem.score*2;
-                    this.game.float.push(new FloatingMessage("-"+enem.score*2, enem.x, enem.y, this.game.width, 20));
+                    this.game.float.push(new FloatingMessage("-"+enem.score*2, enem.x, enem.y, this.game.width, 20, this.game));
                     if (this.game.lifetime <= 0) {
                         this.game.gameOver = true;
                         this.game.killed = true;

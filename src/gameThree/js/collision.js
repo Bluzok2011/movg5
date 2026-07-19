@@ -6,8 +6,8 @@ export class Collision {
         this.sW = 200;
         this.sH = 197;
         this.sizeModif = this.getSize(this.enemyKind);
-        this.dW = this.sW/2 * this.sizeModif;
-        this.dh = this.sH/2 * this.sizeModif;
+        this.dW = (this.sW/2 * this.sizeModif)*this.game.hMod;
+        this.dh = (this.sH/2 * this.sizeModif)*this.game.hMod;
         this.dX = x - this.dW /2;
         this.dY = y - this.dh /2;
         this.frameX = 0;

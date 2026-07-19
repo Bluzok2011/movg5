@@ -1,9 +1,13 @@
 export class UI {
     constructor(g) {
         this.game = g;
-        this.fontSize = 40;
+        this.fontSize = 40*this.game.hMod;
         this.fontFamily = "Creepster";
         this.image = document.getElementById("live");
+        this.first = 50*this.game.hMod;
+        this.second = 81*this.game.hMod;
+        this.third = 95*this.game.hMod;
+        this.fourth = 45*this.game.hMod;
     }
     draw(ctx) {
         ctx.font = this.fontSize + "px " + this.fontFamily;
@@ -12,20 +16,20 @@ export class UI {
 
 
         ctx.fillStyle = "white";
-        ctx.fillText("Score: " + this.game.score, 20, 52);
+        ctx.fillText("Score: " + this.game.score, 20, this.first+2);
         ctx.fillStyle = "black";
-        ctx.fillText("Score: " + this.game.score, 20, 50);
+        ctx.fillText("Score: " + this.game.score, 20, this.first);
 
 
         ctx.font = this.fontSize*0.7 + "px " + this.fontFamily;
         ctx.fillStyle = "white";
-        ctx.fillText("Timer: " + (this.game.time * 0.001).toFixed(1), 20, 83);
+        ctx.fillText("Timer: " + (this.game.time * 0.001).toFixed(1), 20, this.second+2);
         ctx.fillStyle = "black";
-        ctx.fillText("Timer: " + (this.game.time * 0.001).toFixed(1), 20, 81);
+        ctx.fillText("Timer: " + (this.game.time * 0.001).toFixed(1), 20, this.second);
 
 
         for (let i = 0;i < this.game.lifetime;i++) {
-            ctx.drawImage(this.image, 20 +30*i, 95,25,25);
+            ctx.drawImage(this.image, 20 +30*i, this.third,25,25);
         }
 
 
@@ -39,9 +43,9 @@ export class UI {
                 ctx.fillStyle = "black";
                 ctx.font = this.fontSize *0.9  + "px " + this.fontFamily;
                 ctx.fillStyle = "green";
-                ctx.fillText("Who is afraid of who here?", this.game.width / 2 + 2, this.game.height / 2 + 47);
+                ctx.fillText("Who is afraid of who here?", this.game.width / 2 + 2, this.game.height / 2 + this.fourth+2);
                 ctx.fillStyle = "black";
-                ctx.fillText("Who is afraid of who here?", this.game.width / 2, this.game.height / 2 + 45)
+                ctx.fillText("Who is afraid of who here?", this.game.width / 2, this.game.height / 2 + this.fourth)
 
             } else {
                 ctx.fillStyle = "red";
@@ -51,9 +55,9 @@ export class UI {
 
                 ctx.font = this.fontSize *0.75  + "px " + this.fontFamily;
                 ctx.fillStyle = "red";
-                ctx.fillText("Nope. Better luck next time!", this.game.width / 2, this.game.height / 2 +45);
+                ctx.fillText("Nope. Better luck next time!", this.game.width / 2, this.game.height / 2 +this.fourth);
                 ctx.fillStyle = "black";
-                ctx.fillText("Nope. Better luck next time!", this.game.width / 2+2, this.game.height / 2 +47);
+                ctx.fillText("Nope. Better luck next time!", this.game.width / 2+2, this.game.height / 2 +this.fourth+2);
             }
 
         }

@@ -43,7 +43,7 @@ class Enemy {
 export class FlyingEnemy extends Enemy{
     constructor(game) {
         super(game);
-        this.width = Math.random() * 40 + 30;
+        this.width = (Math.random() * 40 + 30)*this.game.hMod;
         this.height = this.width/1.36;
         this.spritewidth = 60;
         this.spriteheight = 44;
@@ -70,11 +70,12 @@ export class FlyingEnemy extends Enemy{
 export class GroundEnemy extends Enemy{
     constructor(game) {
         super(game);
-        this.width = Math.random() * 30 + 40;
+        this.width = (Math.random() * 30 + 40)*this.game.hMod;
         this.height = this.width/0.68;
         this.spritewidth = 60;
         this.spriteheight = 87;
         this.score = 1;
+        this.frameInterval = 1000 / this.fps*3;
         this.x = this.game.width;
         this.y = this.game.height - this.game.ground - this.height;
         this.speedX = 0;
@@ -94,7 +95,7 @@ export class GroundEnemy extends Enemy{
 export class ClimbyEnemy extends Enemy{
     constructor(game) {
         super(game);
-        this.width = Math.random() * 70 + 70;
+        this.width = (Math.random() * 70 + 70)*this.game.hMod;
         this.height = this.width/0.83;
         this.spritewidth = 120;
         this.spriteheight = 144;
@@ -116,7 +117,7 @@ export class ClimbyEnemy extends Enemy{
         super.draw(ctx);
         ctx.beginPath();
         ctx.moveTo(this.x + this.width/2,0);
-        ctx.lineTo(this.x + this.width/2, this.y +50);
+        ctx.lineTo(this.x + this.width/2, this.y +50*this.game.hMod);
         ctx.stroke();
         ctx.closePath();
     }

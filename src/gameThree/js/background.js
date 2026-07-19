@@ -15,14 +15,15 @@ class Helper {
     draw(context) {
         context.drawImage(this.image, this.x, this.y, this.width, this.height);
         context.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+       if(this.game.width>this.width) context.drawImage(this.image, this.x + this.width*2, this.y, this.width, this.height);
     }
 }
 
 export class Background {
     constructor(game) {
         this.game = game;
-        this.width = 1667;
-        this.height = 500;
+        this.width = 1667 * this.game.hMod;
+        this.height = this.game.height;
 
         //layers
         this.layer1Image = document.getElementById("layer1");
