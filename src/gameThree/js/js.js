@@ -2,7 +2,7 @@ import { Player } from "./player.js";
 import { InputHandler } from "./input.js";
 import { Background } from "./background.js";
 import { FlyingEnemy, GroundEnemy, ClimbyEnemy } from "./enemies.js";
-import { UI } from "./UI.js";
+import { UI } from "./ui.js";
 
 window.addEventListener("load", () => {
     const canvas = document.getElementById("canvas1");
