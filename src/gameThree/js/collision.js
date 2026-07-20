@@ -23,6 +23,7 @@ export class Collision {
             this.frimer = 0;
         }
         else this.frimer += delta;
+        //if (this.frameX === 0) this.game.player.sound.play();
         this.dX -= this.game.speed;
         if (this.frameX > this.maxX) this.marked4Deletion = true;
     }

@@ -37,6 +37,8 @@ export class Player {
         this.radius = 45*this.game.hMod;
         this.centerY = null;
         this.centerX = null;
+        this.sound = new Audio();
+        this.sound.src = "../../audio/rock_breaking.flac";
     }
     update(input, deltatime){
         this.checkCollision();
