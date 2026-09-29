@@ -27,7 +27,7 @@ window.addEventListener("load", () => {
             this.particles = [];
             this.float = [];
             this.lifetime = 5;
-            this.goal = 25;
+            this.goal = 50;
             console.log("Modifier: ", modif);
             this.input = new InputHandler(this);
             this.ground = 83 * this.hMod;

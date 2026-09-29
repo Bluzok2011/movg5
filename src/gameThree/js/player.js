@@ -1,4 +1,4 @@
-import {Sitting, Running, Jumping, Falling, Rolling, Diving, Hit} from "./states.js";
+import {Sitting, Running, Jumping, Falling, Rolling, Diving, Hit, states} from "./states.js";
 import { Collision } from "./collision.js";
 import { FloatingMessage } from "./floatMessage.js";
 
@@ -37,6 +37,11 @@ export class Player {
         this.radius = 45*this.game.hMod;
         this.centerY = null;
         this.centerX = null;
+        this.energy = 50;
+        this.energyNeeded = 0;
+        this.energyTimer = 0;
+        this.runningEnergy = false;
+        this.energySpeed = 100;
         this.sound = new Audio();
         this.sound.src = "../../audio/rock_breaking.flac";
     }
@@ -59,7 +64,16 @@ export class Player {
             if (this.speed < this.maxSpeed) {
                 this.speed += 0.5;
             }
+            if (!this.runningEnergy) {
+                this.energyNeeded = parseInt(this.energyNeeded) + 0.3;
+                this.runningEnergy = true;
+            }
+            console.log(this.energyNeeded);
         } else {
+            if (this.runningEnergy) {
+                this.energyNeeded -= 0.3;
+                this.runningEnergy = false;
+            }
             if (this.speed > 0) {
                 this.speed -= 0.5;
             }
@@ -95,6 +109,18 @@ export class Player {
         //circle center and other checks
         this.centerY = this.y + this.height * 0.66;
         this.centerX = this.x + this.width * 0.5;
+        if (this.energy <= this.energyNeeded) {
+            this.setState(states.HIT, 0)
+        } else {
+            if (this.energyTimer < this.energySpeed) this.energyTimer += deltatime;
+            else {
+                this.energy -= this.energyNeeded;
+                this.energyTimer = 0;
+            }
+        }
+        if (this.energy > 50) this.energy = 50
+        console.log(this.energy)
+
     }
     draw(){
         if (this.game.debu) {

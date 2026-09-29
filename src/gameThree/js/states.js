@@ -1,6 +1,6 @@
 import { Dust, Fire, Splash } from "./particles.js";
 
-const states = {
+export const states = {
     SITTING: 0,
     RUNNING: 1,
     JUMPING: 2,
@@ -31,6 +31,7 @@ export class Sitting extends State {
         this.player.speed = 0;
         this.player.vy = 15 * this.game.hMod;
         this.player.radius = 45*this.player.game.hMod;
+        this.player.energyNeeded = -(Math.random() * 0.4 + 0.3).toFixed(1);
     }
     handleInput(input, d) {
         if (this.player.cooldown < 100) this.player.cooldown += d;
@@ -51,6 +52,7 @@ export class Running extends State {
         this.player.frameX = 0;
         this.player.cooldown = 0;
         this.player.radius = 45*this.player.game.hMod;
+        this.player.energyNeeded = -0.2;
     }
     handleInput(input, d) {
         this.game.particles.push(new Dust(this.game, this.player.x + this.player.width*0.6, this.player.y + this.player.height*0.9));
@@ -74,6 +76,7 @@ export class Jumping extends State {
         this.player.maxX = 6;
         this.player.frameX = 0;
         this.player.radius = 45*this.player.game.hMod;
+        this.player.energyNeeded = (Math.random() * 0.4 + 0.3).toFixed(1);
     }
     handleInput(input, d) {
         if (this.player.cooldown < 200) this.player.cooldown += d;
@@ -95,6 +98,7 @@ export class Falling extends State {
         this.player.maxX = 6;
         this.player.frameX = 0;
         this.player.radius = 45*this.player.game.hMod;
+        this.player.energyNeeded = -0.1;
     }
     handleInput(input) {
         if (input.includes("s")) this.player.setState(states.DIVING, 0);
@@ -110,6 +114,7 @@ export class Rolling extends State {
         this.player.maxX = 6;
         this.player.frameX = 0;
         this.player.radius= 30*this.player.game.hMod;
+        this.player.energyNeeded = (Math.random() * 0.8 + 0.5).toFixed(1);
     }
     handleInput(input) {
         this.game.particles.push(new Fire(this.game, this.player.x + this.player.width, this.player.y + this.player.height));
@@ -129,6 +134,7 @@ export class Diving extends State {
         this.player.frameX = 0;
         this.player.vy = 15 *this.player.game.hMod;
         this.player.radius = 30*this.player.game.hMod;
+        this.player.energyNeeded = (Math.random() * 0.4 + 0.3).toFixed(1);
     }
     handleInput(input) {
         this.game.particles.push(new Fire(this.game, this.player.x + this.player.width, this.player.y + this.player.height));
@@ -158,11 +164,14 @@ export class Hit extends State {
         this.player.frameX = 0;
         this.player.vy = 15*this.player.game.hMod;
         this.player.radius = 45*this.player.game.hMod;
+        this.player.energyNeeded = 0;
     }
     handleInput(input) {
         if (this.player.onGround() && this.player.frameX >= this.player.maxX) {
+            this.player.energy = 30;
             this.player.setState(states.RUNNING, 1);
         } else if (this.player.frameX >= this.player.maxX) {
+            this.player.energy = 30;
             this.player.setState(states.FALLING, 1);
         }
     }
